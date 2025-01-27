@@ -83,6 +83,8 @@ def get_graph_root(maze, start, target_cell):
     Returns:
     Node: The root node of the constructed graph. The graph is represented by the root node and its children.
     """
+    global created
+    created = set()
     que = deque()
     root = Node(start, [], 1, 0)
     LENGTH = len(maze)

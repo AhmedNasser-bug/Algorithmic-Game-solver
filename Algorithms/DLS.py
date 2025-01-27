@@ -46,5 +46,5 @@ def get_dls_path(root:Node, goal_condition, goal_condition_args:list, limit):
        if goal_condition_arg: real_args.append(goal_condition_arg)
 
     
-       return iterative_DLS(root, goal_condition, limit, *real_args)
+    return iterative_DLS(root, goal_condition, limit, *real_args)
     

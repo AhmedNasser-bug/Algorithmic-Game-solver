@@ -46,7 +46,7 @@ def get_empty_maze(rows_num, cols_num):
     '''
     This function generates an empty maze of given dimensions.
     '''
-    maze_template = [[1 for i in range(cols_num)]for j in range(rows_num)]
+    maze_template = [[1 for _ in range(cols_num)]for _ in range(rows_num)]
     return maze_template
     
 

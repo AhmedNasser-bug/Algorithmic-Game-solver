@@ -3,7 +3,7 @@ from sys import *
 from os import getcwd
 path.append(getcwd())
 from UI.UI_setup import *
-from Algorithms import DLS, IDDFS, BestFirstSearch, HillClimb
+from Algorithms import DLS, IDDFS, BestFirstSearch, HillClimb, BFS
 
 
 
@@ -62,7 +62,7 @@ class MazeGame:
         self.draw_maze()
     
     def generate_maze(self):
-        # Create a new Maze instance (assuming you have a Maze class)
+        # Create a new Maze instance
         self.main_maze = Maze(self.rows, self.cols, self.complexity)
         return self.main_maze.maze
     
@@ -129,11 +129,6 @@ class MazeGame:
     def solve(self):
         # Reset state to starting position
         self.state = (0, 0)
-        
-        # Clear previous path
-        self.path = []
-        self.draw_maze()  # Redraw maze to clear previous solution
-        
         # Run algorithm
         try:
             self.path = self.algorithm(self.main_maze.root, self.main_maze.goal_condition,idx(self.main_maze.goal[0], self.main_maze.goal[1]), *self.algorithm_args)
@@ -148,11 +143,11 @@ class MazeGame:
     def regenerate_maze(self):
         
         # Reset state
-        self.state = (0, 0)
+        self.state = (0, 0)  # start position
+        self.target = (self.rows-1, self.cols-1)  # bottom-right corner
         self.path = []
-        
-        # Clear and redraw
-        self.draw_maze()
+        self.maze = self.generate_maze()    
+        self.draw_maze()  # Clear and redraw the maze to ensure a fresh start
 
 
                                                 # DLS     # Limit
@@ -162,9 +157,9 @@ def get_maze_gui(rows, cols, complexity_of_maze, algorithm, *algorithm_args):
     Do not include the root of the maze or the goal condition args 
     '''
     root = tk.Tk()
-    gui = MazeGame(root, rows, cols, complexity_of_maze, algorithm, *algorithm_args)
+    gui = MazeGame(root, rows, cols, complexity_of_maze,5, algorithm, *algorithm_args)
     root.mainloop()
 
 if __name__ == "__main__":
-     get_maze_gui(10, 10, 35, 10, IDDFS.IterativeDS) # DLS with a limit of 30 steps_maze_gui(35, 35, 35, Bes, 30) # DLS with a limit of 30 steps
+     get_maze_gui(50, 50, 50, BFS.bfs) # DLS with a limit of 30 steps_maze_gui(35, 35, 35, Bes, 30) # DLS with a limit of 30 steps
     

@@ -119,7 +119,8 @@ class ModernAlgorithmGUI:
             "Best First Search",
             "Depth Limited Search",
             "Iterative Deepening DFS",
-            "Simple Hill Climb"
+            "Simple Hill Climb",
+            "Breadth First Search"
         ]
         
         for algo in algorithms:
@@ -166,11 +167,8 @@ class ModernAlgorithmGUI:
         algo_name.pack(pady=(0, 10))
     
         # Check if it's a non-pathfinding algorithm
-        non_pathfinding = ["MinMax", "AlphaBeta Pruning", "Genetic Algorithm"]
-        if self.selected_algorithm in non_pathfinding:
-            self.create_algorithm_specific_inputs(problems_frame)
-        else:
-            self.create_standard_problem_buttons(problems_frame)
+
+        self.create_standard_problem_buttons(problems_frame)
 
 
     def algorithm_selected(self, algorithm):
@@ -187,6 +185,7 @@ class ModernAlgorithmGUI:
                 messagebox.showerror("Error", "Please enter a valid integer!")
                 return
         else:
+            self.depth_limit = 0
             self.create_problem_buttons()
             
     def problem_selected(self, problem):
@@ -196,25 +195,6 @@ class ModernAlgorithmGUI:
             'depth_limit': getattr(self, 'depth_limit', None)  # For DLS algorithm
         }
 
-        # For non-pathfinding algorithms, get the input values
-        if hasattr(self, 'input_values'):
-            if self.selected_algorithm == "MinMax":
-                settings['numbers'] = [int(x) for x in self.input_values['numbers'].get().strip().split()]
-
-            elif self.selected_algorithm == "Genetic Algorithm":
-                settings.update({
-                    'population': int(self.input_values['population'].get()),
-                    'mutation_rate': float(self.input_values['mutation_rate'].get()),
-                    'generations': int(self.input_values['generations'].get())
-                })
-
-            elif self.selected_algorithm == "AlphaBeta Pruning":
-                settings.update({
-                    'numbers': [int(x) for x in self.input_values['numbers'].get().strip().split()],
-                    'alpha': int(self.input_values['alpha'].get()),
-                    'beta': int(self.input_values['beta'].get())
-                })
-
         # Create new window for the game
         game_window = ctk.CTkToplevel(self.root)
         game_window.title(problem)
@@ -223,12 +203,21 @@ class ModernAlgorithmGUI:
 
         func_algorithm = self.get_chosen_algorithm(self.selected_algorithm)
         # Initialize appropriate game class based on selection
-        if problem == "Sudoku Solver":
-            SudokuGame(game_window, func_algorithm, self.depth_limit if self.depth_limit != 0 else None)
-        elif problem == "Maze Solver":
-            MazeGame(game_window, 50, 50, 60, 30, func_algorithm, self.depth_limit if self.depth_limit != 0 else None)
-        elif problem == "8-Queen Solver":
-            QueenGame(game_window, 2, func_algorithm, self.depth_limit if self.depth_limit != 0 else None)
+        if self.depth_limit  != 0:
+            if problem == "Sudoku Solver":
+                SudokuGame(game_window, func_algorithm, self.depth_limit)
+            elif problem == "Maze Solver":
+                MazeGame(game_window, 50, 50, 60, 1, func_algorithm, self.depth_limit)
+            elif problem == "8-Queen Solver":
+                QueenGame(game_window, 2, func_algorithm, self.depth_limit)
+        else:
+            if problem == "Sudoku Solver":
+                SudokuGame(game_window, func_algorithm)
+            elif problem == "Maze Solver":
+                MazeGame(game_window, 50, 50, 60, 30, func_algorithm)
+            elif problem == "8-Queen Solver":
+                QueenGame(game_window, 1, func_algorithm)
+            
 
     def get_chosen_algorithm(self, algorithm):
         algorithms = [
@@ -236,61 +225,13 @@ class ModernAlgorithmGUI:
             "Depth Limited Search",
             "Iterative Deepening DFS",
             "Simple Hill Climb",
-            "MinMax",
-            "AlphaBeta Pruning",
-            "Genetic Algorithm"
+            "Breadth First Search"
         ]
-        func_algorithms = [BestFirstSearch.bestfirstsearch, DLS.get_dls_path, IDDFS.IterativeDS, HillClimb.hill_climb]
+        func_algorithms = [BestFirstSearch.bestfirstsearch, DLS.get_dls_path, IDDFS.IterativeDS, HillClimb.hill_climb, BFS.bfs]
         for algorithm in algorithms:
             if self.selected_algorithm == algorithm:
                 return func_algorithms[algorithms.index(algorithm)]
-
-
-    def process_algorithm_inputs(self):
-        try:
-            if self.selected_algorithm == "MinMax":
-                numbers = self.input_values['numbers'].get().strip()
-                if not numbers:
-                    raise ValueError("Please enter the numbers")
-                numbers = [int(x) for x in numbers.split()]
-                messagebox.showinfo("Success", f"Processing MinMax with numbers: {numbers}")
-
-            elif self.selected_algorithm == "Genetic Algorithm":
-                population = int(self.input_values['population'].get())
-                mutation_rate = float(self.input_values['mutation_rate'].get())
-                generations = int(self.input_values['generations'].get())
-
-                if not (0 <= mutation_rate <= 1):
-                    raise ValueError("Mutation rate must be between 0 and 1")
-                if population <= 0 or generations <= 0:
-                    raise ValueError("Population and generations must be positive")
-
-                messagebox.showinfo("Success", 
-                    f"Processing Genetic Algorithm with:\n"
-                    f"Population: {population}\n"
-                    f"Mutation Rate: {mutation_rate}\n"
-                    f"Generations: {generations}")
-
-            elif self.selected_algorithm == "AlphaBeta Pruning":
-                numbers = self.input_values['numbers'].get().strip()
-                alpha = int(self.input_values['alpha'].get())
-                beta = int(self.input_values['beta'].get())
-
-                if not numbers:
-                    raise ValueError("Please enter the numbers")
-                numbers = [int(x) for x in numbers.split()]
-
-                messagebox.showinfo("Success", 
-                    f"Processing AlphaBeta Pruning with:\n"
-                    f"Numbers: {numbers}\n"
-                    f"Alpha: {alpha}\n"
-                    f"Beta: {beta}")
-
-        except ValueError as e:
-            messagebox.showerror("Error", str(e))
-        except Exception as e:
-            messagebox.showerror("Error", f"Invalid input: {str(e)}")
-
+            
     def create_standard_problem_buttons(self, parent_frame):
         problems = [
             ("Sudoku Solver", self.colors["problem_1"]),
