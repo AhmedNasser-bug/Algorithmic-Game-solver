@@ -1,3 +1,6 @@
+# Summary
+Python-based system using reusable pathfinding algorithms to solve multiple games via a common Graph 
+interface. Easily extensible for new games.
 # Role
 1. Implemented pathfinding algorithms (DLS, BFS, IDDFS, HillClimb).
 2. Initialized and implemented the idea of unified graph solver algorithms.
