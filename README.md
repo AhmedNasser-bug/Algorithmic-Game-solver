@@ -1,13 +1,6 @@
 # Summary
 Python-based system using reusable pathfinding algorithms to solve multiple games via a common Graph 
 interface. Easily extensible for new games.
-# Role
-1. Implemented pathfinding algorithms (DLS, BFS, IDDFS, HillClimb).
-2. Initialized and implemented the idea of unified graph solver algorithms.
-3. Implemented sudoku game graph by assigning each empty box to its all possible number, and the goal is the box with exactly one possible choice.
-4. Implemented 8 queens game graph by generating each possible position for all 8 queens inside the 8x8 board, and the goal is a valid 8 queens board.
-5. Implemented Maze game graph by generating a new random maze then turning all possible moves from the start to the goal into a graph. 
-7. Built both CLI/GUI testing environments with unified interfaces.
 # Technologies
 1. python
 2. tkinter
