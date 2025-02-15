@@ -79,7 +79,6 @@ def get_new_choice_tree(board) -> Node:
 
     global possible_moves
     preprocess(board)
-    #refresh_board(prev_choice_row, prev_choice_col, board)
     
     # Construct all possible nodes
     nodes = []
