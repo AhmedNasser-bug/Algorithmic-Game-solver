@@ -10,7 +10,13 @@ interface. Easily extensible for new games.
 5. Implemented Maze game graph by generating a new random maze then turning all possible moves from the start to the goal into a graph. 
 7. Built both CLI/GUI testing environments with unified interfaces.
 ### @MohamedFathi2:
-
+1. Documented the project by providing detailed explanations of various AI search and optimization algorithms, including their advantages, limitations, and applications.
+2. Created structured overviews of algorithms such as Hill Climbing, Minimax, Alpha-Beta Pruning, BFS, IDDFS, DLS, and A*.
+3. Explained algorithm implementations with step-by-step breakdowns, including key code snippets to demonstrate their functionality.
+4. Outlined real-world applications of the implemented algorithms, linking them to areas like game AI, robotics, optimization, and machine learning.
+5. Designed a clear problem breakdown for challenges like the Maze Problem, defining its constraints, solution strategies, and performance evaluation criteria.
+6. Provided code explanations for core components such as graph representation, pathfinding strategies, and heuristic-based decision-making.
+7. Compiled relevant external resources to support further learning and research on the algorithms used in the project.
 # Technologies
 1. python
 2. tkinter
